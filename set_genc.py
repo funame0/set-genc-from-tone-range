@@ -61,7 +61,7 @@ def modify_ustx(ustx_filepath, part_name, tone_range):
         part["curves"] = curves
 
     with open(ustx_filepath, mode="w", encoding="utf-8") as f:
-        yaml.safe_dump(ustx, f, sort_keys=False)
+        yaml.safe_dump(ustx, f, sort_keys=False, allow_unicode=True)
 
 
 if __name__ == "__main__":
