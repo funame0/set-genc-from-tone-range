@@ -57,8 +57,8 @@ def modify_ustx(ustx_filepath, part_name, tone_range):
             if gen == prev_gen:
                 continue
 
-            curve["xs"] = note["position"]
-            curve["ys"] = gen
+            curve["xs"].append(note["position"])
+            curve["ys"].append(gen)
             prev_gen = gen
 
         curves = list(filter(lambda curve: curve["abbr"] != "genc", part["curves"]))
