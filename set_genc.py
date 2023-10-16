@@ -34,3 +34,41 @@ def gen_from_tone_range(tone: int, lowest_spn: str, highest_spn: str):
     distance = calc_dist_from_range(tone, lowest_tone, highest_tone)
     gen = int(distance / 12)
     return gen
+
+
+def modify_ustx(ustx_filepath, part_name, tone_range):
+    if "-" in tone_range:
+        lowest, highest = str.split(tone_range, "-", 1)
+    else:
+        lowest = highest = tone_range
+
+    with open(ustx_filepath, encoding="utf-8") as f:
+        ustx = yaml.safe_load(f)
+
+    for part in ustx["voice_parts"]:
+        if part["name"] != part_name:
+            continue
+
+        curve = {"xs": [], "ys": [], "abbr": "genc"}
+
+        prev_gen = None
+        for note in part["notes"]:
+            gen = gen_from_tone_range(note["tone"], lowest, highest)
+            if gen == prev_gen:
+                continue
+
+            curve["xs"] = note["position"]
+            curve["ys"] = gen
+            prev_gen = gen
+
+        curves = list(filter(lambda curve: curve["abbr"] != "genc", part["curves"]))
+        curves.append(curve)
+        part["curves"] = curves
+
+    with open(ustx_filepath, mode="w", encoding="utf-8") as f:
+        yaml.safe_dump(ustx, f, sort_keys=False)
+
+
+if __name__ == "__main__":
+    args = sys.argv
+    modify_ustx(args[1], args[2], args[3])
