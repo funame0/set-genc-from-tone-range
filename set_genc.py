@@ -24,7 +24,7 @@ def calc_dist_from_range(tone, lowest, highest):
     return 0
 
 
-def genc_from_tone_range(tone: int, lowest_spn: str, highest_spn: str):
+def gen_from_tone_range(tone: int, lowest_spn: str, highest_spn: str):
     if not isinstance(tone, int):
         raise TypeError("tone must be int.")
 
@@ -32,5 +32,5 @@ def genc_from_tone_range(tone: int, lowest_spn: str, highest_spn: str):
     highest_tone = spn2tone(highest_spn)
 
     distance = calc_dist_from_range(tone, lowest_tone, highest_tone)
-    genc = int(distance / 12)
-    return genc
+    gen = int(distance / 12)
+    return gen
